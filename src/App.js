@@ -1,26 +1,85 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { Movies } from './components/index'
+import { getMovies } from './services/fakeMovieService';
+import { getGenres } from './services/fakeGenreService';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    movies: [],
+    pageSize: 4,
+    currentPage: 1,
+    genres: [],
+    selectedGenre: {}
+  }
+
+  componentDidMount = () => {
+    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()]
+    this.setState({
+      movies: getMovies(),
+      genres
+    })
+  }
+
+  handleDelete = (movie) => {
+    const { movies } = this.state;
+    const result = movies.filter(m => m._id !== movie._id)
+    this.setState({
+      movies: result
+    })
+
+  }
+
+  handleLike = (movie) => {
+    const movies = [...this.state.movies];
+    const index = movies.indexOf(movie);
+    movies[index] = { ...movies[index] }
+    movies[index].liked = !movies[index].liked;
+    this.setState({ movies })
+  }
+
+  handlePageChange = (page) => {
+    this.setState({
+      currentPage: page
+    })
+  }
+
+  handleGenreSelect = (genre) => {
+    this.setState({
+      selectedGenre: genre,
+      currentPage: 1
+    })
+  }
+
+  handleSort = path => {
+    console.log(path)
+  }
+
+  render() {
+    const { movies, pageSize, currentPage, genres, selectedGenre } = this.state;
+
+    // console.log(movies)
+    return (
+
+      <main className="container" >
+        <Movies
+          genres={genres}
+          selectedGenre={selectedGenre}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          movies={movies}
+          onDelete={(movie) => this.handleDelete(movie)}
+          onLike={(movie) => this.handleLike(movie)}
+          onPageChange={(page) => this.handlePageChange(page)}
+          onGenreSelect={(genre) => this.handleGenreSelect(genre)}
+          onSort={(path) => this.handleSort(path)}
+        />
+
+      </main>
+
+    );
+  }
 }
 
 export default App;
