@@ -11,7 +11,8 @@ class App extends Component {
     pageSize: 4,
     currentPage: 1,
     genres: [],
-    selectedGenre: {}
+    selectedGenre: {},
+    sortColumn: { path: "title", order: "asc" }
   }
 
   componentDidMount = () => {
@@ -53,17 +54,34 @@ class App extends Component {
   }
 
   handleSort = path => {
-    console.log(path)
+    const sortColumn = { ...this.state.sortColumn }
+    if (sortColumn.path === path) {
+      sortColumn.order = (sortColumn.order === "asc") ? "desc" : "asc"
+    }
+    else {
+      sortColumn.path = path;
+      sortColumn.order = "asc"
+    }
+
+    this.setState({ sortColumn })
   }
 
   render() {
-    const { movies, pageSize, currentPage, genres, selectedGenre } = this.state;
+    const {
+      movies,
+      pageSize,
+      currentPage,
+      genres,
+      selectedGenre,
+      sortColumn
+    } = this.state;
 
     // console.log(movies)
     return (
 
       <main className="container" >
         <Movies
+          sortColumn={sortColumn}
           genres={genres}
           selectedGenre={selectedGenre}
           pageSize={pageSize}

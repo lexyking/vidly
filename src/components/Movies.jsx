@@ -1,7 +1,8 @@
 import React from 'react';
 import { Pagination, ListGroup } from '../common/index';
 import { paginate } from '../utils/index'
-import { MoviesTable } from './index'
+import { MoviesTable } from './index';
+import _ from 'lodash';
 
 
 const Movies = (props) => {
@@ -16,14 +17,17 @@ const Movies = (props) => {
         onDelete,
         onSort,
         onGenreSelect,
-        selectedGenre
+        selectedGenre,
+        sortColumn
     } = props;
 
     if (movies.length === 0) return <p>There are no movies in the database</p>
 
     const filteredMovies = (selectedGenre.name && selectedGenre._id) ? movies.filter(m => m.genre._id === selectedGenre._id) : movies
 
-    const allMovies = paginate(filteredMovies, currentPage, pageSize)
+    const sorted = _.orderBy(filteredMovies, [sortColumn.path], [sortColumn.order])
+
+    const allMovies = paginate(sorted, currentPage, pageSize)
     return (
         <div className="row">
 
@@ -38,6 +42,7 @@ const Movies = (props) => {
                 <p>There are {filteredMovies.length} movies in the database</p>
                 <main className="container">
                     <MoviesTable
+                        sortColumn={sortColumn}
                         allMovies={allMovies}
                         onLike={(movie) => onLike(movie)}
                         onDelete={(movie) => onDelete(movie)}
