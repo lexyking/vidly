@@ -3,6 +3,8 @@ import { Pagination, ListGroup } from '../common/index';
 import { paginate } from '../utils/index'
 import { MoviesTable } from './index';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+
 
 
 class Movies extends Component {
@@ -75,4 +77,18 @@ class Movies extends Component {
     }
 }
 
+
+Movies.propTypes = {
+    movies: PropTypes.array.isRequired,
+    pageSize: PropTypes.number.isRequired,
+    onPageChange: PropTypes.func.isRequired,
+    currentPage: PropTypes.number.isRequired,
+    genres: PropTypes.array.isRequired,
+    onLike: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onSort: PropTypes.func.isRequired,
+    onGenreSelect: PropTypes.func.isRequired,
+    selectedGenre: PropTypes.object.isRequired,
+    sortColumn: PropTypes.object.isRequired
+}
 export default Movies

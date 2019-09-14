@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Delete } from '../components/index';
 import { Like } from '../common/index';
-
+import PropTypes from 'prop-types';
 
 
 export class TableBody extends Component {
@@ -12,6 +12,7 @@ export class TableBody extends Component {
       onLike,
       onDelete
     } = this.props;
+
     return (
       <tbody>
         {data.map((movie, index) => {
@@ -31,6 +32,12 @@ export class TableBody extends Component {
       </tbody>
     )
   }
+}
+
+TableBody.propTypes = {
+  data: PropTypes.array.isRequired,
+  onLike: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 }
 
 export default TableBody

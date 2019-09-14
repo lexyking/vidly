@@ -1,14 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ListGroup(props) {
-  const {
-    itemsList,
-    onGenreSelect,
-    valueProperty,
-    idProperty,
-    selectedGenre
-  } = props
+function ListGroup({ itemsList, onGenreSelect, valueProperty, idProperty, selectedGenre }) {
+
   return (
     <ul className="list-group">
       {itemsList.map(item =>
@@ -24,7 +18,10 @@ function ListGroup(props) {
 }
 
 ListGroup.propTypes = {
-  itemsList: PropTypes.arrayOf(PropTypes.object).isRequired
+  itemsList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onGenreSelect: PropTypes.func.isRequired,
+  selectedGenre: PropTypes.object.isRequired
+
 }
 
 ListGroup.defaultProps = {
